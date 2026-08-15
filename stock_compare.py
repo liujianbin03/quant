@@ -104,5 +104,5 @@ if series:
     plt.legend(loc='best')
     plt.grid(alpha=0.3)
     plt.tight_layout()
-    plt.savefig('compare.png', dpi=150)
-    print("\n[OK] 对比图已保存 compare.png")
+    plt.savefig('figures/compare.png', dpi=150)
+    print("\n[OK] 对比图已保存 figures/compare.png")

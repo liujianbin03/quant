@@ -186,5 +186,5 @@ axes[1].legend(fontsize=8)
 axes[1].grid(alpha=0.3)
 
 plt.tight_layout()
-plt.savefig("value_quality.png", dpi=150)
-print("\n[OK] 图表已保存 value_quality.png")
+plt.savefig("figures/value_quality.png", dpi=150)
+print("\n[OK] 图表已保存 figures/value_quality.png")

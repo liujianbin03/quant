@@ -35,7 +35,7 @@ quant/
 ├── sector_analysis.py    # 板块成分分析
 ├── stock_analyze.py      # 多维个股分析
 ├── strategy_battle.py    # 经典策略擂台对比
-└── *.png                 # 结果图表
+└── figures/              # 结果图表（22 张 PNG）
 ```
 
 ## 数据源

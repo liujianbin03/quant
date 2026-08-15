@@ -150,5 +150,5 @@ plt.title(f"{NAME}({CODE}) 双均线策略回测  收益 {((final/INIT_CASH)-1)*
 plt.legend()
 plt.grid(alpha=0.3)
 plt.tight_layout()
-plt.savefig('result.png', dpi=150)
-print("[OK] 图表已保存到 result.png")
+plt.savefig('figures/result.png', dpi=150)
+print("[OK] 图表已保存到 figures/result.png")

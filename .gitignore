@@ -2,6 +2,9 @@
 *.pkl
 *.csv
 
+# 临时状态（抓取断点清单等，可重新生成）
+limit_missing.json
+
 # Python
 __pycache__/
 *.py[cod]

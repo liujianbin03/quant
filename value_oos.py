@@ -176,5 +176,5 @@ axes[1].legend()
 axes[1].grid(alpha=0.3)
 
 plt.tight_layout()
-plt.savefig("value_oos.png", dpi=150)
-print("\n[OK] 图表已保存 value_oos.png")
+plt.savefig("figures/value_oos.png", dpi=150)
+print("\n[OK] 图表已保存 figures/value_oos.png")

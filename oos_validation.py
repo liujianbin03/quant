@@ -192,5 +192,5 @@ axes[1].set_ylabel("年化收益(%)")
 axes[1].grid(alpha=0.3, axis='y')
 
 plt.tight_layout()
-plt.savefig("oos_validation.png", dpi=150)
-print("\n[OK] 图表已保存 oos_validation.png")
+plt.savefig("figures/oos_validation.png", dpi=150)
+print("\n[OK] 图表已保存 figures/oos_validation.png")

@@ -246,8 +246,8 @@ for i in range(len(names)):
 plt.colorbar(im, label='相关系数')
 plt.title("因子相关性矩阵")
 plt.tight_layout()
-plt.savefig("factor_corr_matrix.png", dpi=150)
-print("\n[OK] 相关性热力图已保存 factor_corr_matrix.png")
+plt.savefig("figures/factor_corr_matrix.png", dpi=150)
+print("\n[OK] 相关性热力图已保存 figures/factor_corr_matrix.png")
 
 # ============ IC 时序图 ============
 plt.figure(figsize=(14, 6))
@@ -261,5 +261,5 @@ plt.ylabel("IC (秩相关)")
 plt.legend(ncol=3)
 plt.grid(alpha=0.3)
 plt.tight_layout()
-plt.savefig("factor_ic_timeseries.png", dpi=150)
-print("[OK] IC时序图已保存 factor_ic_timeseries.png")
+plt.savefig("figures/factor_ic_timeseries.png", dpi=150)
+print("[OK] IC时序图已保存 figures/factor_ic_timeseries.png")

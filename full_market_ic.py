@@ -218,8 +218,8 @@ plt.ylabel("IC (秩相关)")
 plt.legend(ncol=2)
 plt.grid(alpha=0.3)
 plt.tight_layout()
-plt.savefig("full_market_ic_ts.png", dpi=150)
-print("\n[OK] IC时序图已保存 full_market_ic_ts.png", flush=True)
+plt.savefig("figures/full_market_ic_ts.png", dpi=150)
+print("\n[OK] IC时序图已保存 figures/full_market_ic_ts.png", flush=True)
 
 # ============ 图2：相关性热力图 ============
 plt.figure(figsize=(8, 7))
@@ -233,5 +233,5 @@ for i in range(len(names)):
 plt.colorbar(label='相关系数')
 plt.title("全 A 股因子相关性矩阵")
 plt.tight_layout()
-plt.savefig("full_market_corr.png", dpi=150)
-print("[OK] 相关性热力图已保存 full_market_corr.png", flush=True)
+plt.savefig("figures/full_market_corr.png", dpi=150)
+print("[OK] 相关性热力图已保存 figures/full_market_corr.png", flush=True)
