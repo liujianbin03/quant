@@ -5,6 +5,9 @@
 # 临时状态（抓取断点清单等，可重新生成）
 limit_missing.json
 
+# 结果图表（各分析脚本生成，可重新生成，不入库）
+figures/
+
 # Python
 __pycache__/
 *.py[cod]

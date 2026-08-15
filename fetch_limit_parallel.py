@@ -15,7 +15,7 @@ START, END = "2015-01-01", "2026-08-14"
 CACHE = "limit_cache.pkl"
 CHECKPOINT = "limit_checkpoint.pkl"
 FIELDS = "date,open,high,low,preclose,tradestatus,pctChg,isST"
-WORKERS = 8
+WORKERS = 2  # 降并发限速：8 进程并发会触发 baostock 封 IP（黑名单）
 
 with open("full_market_cache.pkl", 'rb') as f:
     listed = pickle.load(f)
@@ -24,6 +24,7 @@ CODES = list(listed['close'].columns)
 
 def fetch_one(code):
     """单只抓取，返回 (code, dict_of_series 或 None)"""
+    time.sleep(0.5)  # 限速：避免并发高频请求被封 IP
     try:
         lg = bs.login()
         rs = bs.query_history_k_data_plus(code, FIELDS,

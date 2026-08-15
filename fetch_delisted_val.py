@@ -28,6 +28,7 @@ def fetch(codes):
     fail = 0
     t0 = time.time()
     for i, code in enumerate(todo):
+        time.sleep(0.5)  # 限速：避免高频请求被 baostock 封 IP
         try:
             rs = bs.query_history_k_data_plus(
                 code, "date,peTTM,pbMRQ,psTTM,pcfNcfTTM",

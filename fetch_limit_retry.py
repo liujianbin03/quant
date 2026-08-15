@@ -3,6 +3,7 @@
 import json
 import os
 import pickle
+import time
 import pandas as pd
 import baostock as bs
 from multiprocessing import Pool
@@ -10,13 +11,14 @@ from multiprocessing import Pool
 START, END = "2015-01-01", "2026-08-14"
 CACHE = "limit_cache.pkl"
 FIELDS = "date,open,high,low,preclose,tradestatus,pctChg,isST"
-WORKERS = 4
+WORKERS = 2  # 降并发限速：避免被 baostock 封 IP
 
 with open("limit_missing.json") as f:
     CODES = json.load(f)
 
 
 def fetch_one(code):
+    time.sleep(0.5)  # 限速：避免并发高频请求被封 IP
     try:
         lg = bs.login()
         rs = bs.query_history_k_data_plus(code, FIELDS,

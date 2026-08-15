@@ -29,6 +29,7 @@ def fetch(codes):
     fail = 0
     t0 = time.time()
     for i, code in enumerate(todo):
+        time.sleep(0.5)  # 限速：避免高频请求被 baostock 封 IP
         # 股本：从最新年报往前找（2025 -> 2014），取第一个有数据的 totalShare
         ts = None
         for year in range(2025, 2013, -1):

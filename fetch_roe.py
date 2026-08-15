@@ -46,6 +46,7 @@ todo = [c for c in CODES if c not in done]
 fail = 0
 t0 = time.time()
 for i, code in enumerate(todo):
+    time.sleep(0.3)  # 限速：避免高频请求被封 IP（新浪源）
     try:
         annual = get_annual_roe(code)
         if annual:
