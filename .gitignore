@@ -1,0 +1,17 @@
+# 数据缓存（由 fetch_*.py 脚本从 baostock / akshare / 新浪 抓取生成，可重新生成）
+*.pkl
+*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
