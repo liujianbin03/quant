@@ -145,7 +145,34 @@ if os.path.exists("paper_trade_state.pkl"):
     print("\n【4. 纸面跟踪实盘状态】")
     print(f"  起始 {st['date'].date()}，当前净值 {st['nav']:.4f}，沪深300起始 {st.get('nav0_index', st['index']):.0f}")
     if os.path.exists("paper_trade_history.csv"):
-        h = pd.read_csv("paper_trade_history.csv")
-        print(f"  已记录 {len(h)} 期，累计净值 {h['nav'].iloc[-1]:.4f}")
+        hist_df = pd.read_csv("paper_trade_history.csv")
+        print(f"  已记录 {len(hist_df)} 期，累计净值 {hist_df['nav'].iloc[-1]:.4f}")
     else:
         print("  尚无历史记录（等待下次月度数据刷新后运行 paper_trade.py）")
+
+# ============ 持久化报告（Markdown） ============
+import datetime
+os.makedirs("reports", exist_ok=True)
+report_date = datetime.date.today().isoformat()
+md = []
+md.append(f"# 绩效与归因报告  {report_date}\n")
+md.append("策略：PB+EP+换手率+涨停次数，top20，剔小30%，月度含成本\n")
+md.append("## 绩效\n")
+md.append(f"- 累计净值：策略 {cum.iloc[-1]:.2f} | 等权 {b_cum.iloc[-1]:.2f} | 沪深300 {h_cum.iloc[-1]:.2f}")
+md.append(f"- 年化：{annual:+.2f}%")
+md.append(f"- 夏普：{sharpe:.2f}")
+md.append(f"- 最大回撤：{mdd:.2f}%")
+md.append(f"- 近12期(≈1年)：策略 {(1+s[-12:]).prod()-1:+.2%} | 沪深300 {(1+h[-12:]).prod()-1:+.2%}\n")
+md.append("## 归因（当前持仓 vs 候选池）\n")
+md.append("| 因子 | 持仓均值 | 候选池均值 | 倾斜 |")
+md.append("|---|---|---|---|")
+for name, a, bv, tilt in rows:
+    md.append(f"| {name} | {a:.2f} | {bv:.2f} | {tilt} |")
+md.append("\n## 目标对标（修订后）\n")
+md.append(f"- 跑赢沪深300(超额≥0)：超额 {excess_h:+.1f}pp {'✓' if excess_h>=0 else '✗'}")
+md.append(f"- 最大回撤≤15%：{mdd:.1f}% {'✓' if mdd>=-15 else '✗'}")
+md.append(f"- 夏普≥0.4：{sharpe:.2f} {'✓' if sharpe>=0.4 else '✗'}")
+path = f"reports/report_{report_date}.md"
+with open(path, 'w', encoding='utf-8') as f:
+    f.write("\n".join(md))
+print(f"\n[报告已保存] {path}")
