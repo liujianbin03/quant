@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-纸面跟踪（paper trade）：零风险地前向验证 PB+EP+换手率 + 剔小30% 策略
+纸面跟踪（paper trade）：零风险地前向验证 PB+EP+换手率+涨停次数 + 剔小30% 策略
 用法（每次刷新数据后跑一次，建议月度）：
     python paper_trade.py
 
@@ -71,14 +71,16 @@ with np.errstate(divide='ignore', invalid='ignore'):
     ep = (1.0 / pe).replace([np.inf, -np.inf], np.nan)
 
 mcap = close.mul(total_share, axis=1)
+daily_ret = close.pct_change(fill_method=None)
 dates = close.index
 
 
 def score_strategy(i):
-    """PB+EP + 换手率（低换手好）"""
+    """PB+EP + 换手率(低) + 涨停次数(少) —— 参数搜索样本外最优"""
     pbep = -zscore(clean(pb.iloc[i])) + zscore(winsorize(ep.iloc[i]))
     t = -zscore(winsorize(turn.iloc[i - 21:i].mean()))
-    return pbep + t
+    lc = -zscore(winsorize((daily_ret.iloc[i - 63:i] >= 0.095).sum()))
+    return pbep + t + lc
 
 
 def universe_ex_small(i):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-选股清单：输出 PB+EP+换手率 + 剔小30% 策略的当前 top-N 买入清单 + 与沪深300对比
+选股清单：输出 PB+EP+换手率+涨停次数 + 剔小30% 策略的当前 top-N 买入清单 + 与沪深300对比
 用法：
     python signal_picker.py          # 默认 top20
     python signal_picker.py 50       # 自定义持仓数
@@ -65,14 +65,16 @@ with np.errstate(divide='ignore', invalid='ignore'):
     ep = (1.0 / pe).replace([np.inf, -np.inf], np.nan)
 
 mcap = close.mul(total_share, axis=1)
+daily_ret = close.pct_change(fill_method=None)
 dates = close.index
 
 
 def score_strategy(i):
-    """PB+EP + 换手率（低换手好）"""
+    """PB+EP + 换手率(低) + 涨停次数(少) —— 参数搜索样本外最优"""
     pbep = -zscore(clean(pb.iloc[i])) + zscore(winsorize(ep.iloc[i]))
     t = -zscore(winsorize(turn.iloc[i - 21:i].mean()))
-    return pbep + t
+    lc = -zscore(winsorize((daily_ret.iloc[i - 63:i] >= 0.095).sum()))
+    return pbep + t + lc
 
 
 def universe_ex_small(i):
@@ -89,7 +91,7 @@ valid = sc.dropna().index.intersection(universe_ex_small(i))
 top = sc[valid].nlargest(N_HOLD)
 
 print("=" * 88)
-print(f"A股价值策略选股清单（PB+EP+换手率 + 剔小30%）  数据截至 {cur_date.date()}  持仓 top{N_HOLD}")
+print(f"A股价值策略选股清单（PB+EP+换手率+涨停次数 + 剔小30%）  数据截至 {cur_date.date()}  持仓 top{N_HOLD}")
 print("=" * 88)
 print(f"{'排名':<5}{'代码':<12}{'名称':<12}{'收盘价':>9}{'PB':>8}{'EP%':>8}{'分数':>8}")
 print("-" * 88)
