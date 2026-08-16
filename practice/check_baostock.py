@@ -19,7 +19,7 @@ if lg.error_code == "0":
     print(f"[OK] baostock 已解封，可正常抓数据。开始补抓退市股股本...\n")
     bs.logout()
     # 调用抓取脚本（已内置限速 0.5s/请求）
-    r = subprocess.run([sys.executable, "fetch_delisted_share.py"])
+    r = subprocess.run([sys.executable, "fetch/fetch_delisted_share.py"])
     sys.exit(r.returncode)
 else:
     print(f"[黑名单未解除] code={lg.error_code} msg={lg.error_msg}")

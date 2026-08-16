@@ -24,36 +24,36 @@
 
 ```
 quant/
-├── fetch_*.py            # 数据抓取（baostock / akshare / 新浪），带断点续跑 + 限速
-├── fetch_delisted_share.py # 退市股股本（补全退市股市值数据）
-├── check_baostock.py     # 换IP后一键检测 baostock 是否解封
-├── value_factor.py       # PB/PE/PS/PCF 估值因子 IC + 回测
-├── ep_factor.py          # EP(盈利收益率)因子 + 剔除最小30%市值（Liu-Stambaugh-Yuan）
-├── value_ep_combo.py     # PB + EP 组合检验（分散化 or 稀释）
-├── value_ep_robustness.py # EP/PB/PB+EP 幸存者偏差修正 + 样本外鲁棒性
-├── value_ep_barra.py     # Barra CNE5 风格中性化（市值+行业+Beta）
-├── value_ep_walkforward.py # 滚动 + 多切点 walk-forward 样本外
-├── value_ep_combined.py  # 退市修正 × 剔小30% 四象限终极检验
-├── ml_cross_section.py   # LightGBM 截面选股 walk-forward（结论：无新增 alpha）
-├── value_oos.py          # 价值因子样本外验证（2021-01 切分）
-├── value_survivorship.py # 价值策略幸存者偏差检验
-├── value_quality.py      # PB + ROE 双因子（价值+质量，方案 A）
-├── value_quality2.py     # PB + 5 质量因子增量 alpha 检验
-├── full_market_ic.py     # 全市场动量/反转/波动/换手 IC 分析
-├── cost_backtest.py      # 带成本回测（佣金+印花税+滑点）
-├── oos_validation.py     # 反转策略样本外验证
-├── survivorship_bias.py  # 幸存者偏差（退市股）主分析
-├── delist_filter.py      # 面值退市风险过滤
-├── sector_analysis.py    # 板块成分分析
-├── stock_analyze.py      # 多维个股分析
-├── strategy_battle.py    # 经典策略擂台对比
-└── figures/              # 结果图表（本地生成，不入库）
+├── config.py              # 路径与运行约定（所有脚本在根目录运行）
+├── fetch/                 # 数据抓取（14个，含限速+断点续跑）
+│   ├── full_market_ic.py  # 全市场 close/turn（主价格源）
+│   ├── fetch_valuation.py # PE/PB/PS/PCF 估值
+│   ├── fetch_delisted*.py # 退市股 价格/估值/股本
+│   ├── fetch_roe.py / fetch_quality.py  # 质量因子（akshare 新浪）
+│   ├── fetch_size_industry.py  # 股本/行业
+│   └── fetch_index_name.py      # 沪深300 + 股票名称
+├── research/              # 因子研究/回测/验证（45个，历史记录）
+│   ├── value_factor.py / ep_factor.py / value_ep_*.py  # 价值/EP 研究主线
+│   ├── reaction_factors.py   # 市场反应因子
+│   ├── ml_cross_section.py   # LightGBM 截面（结论：无新增 alpha）
+│   ├── goal_search.py / goal_sim.py / risk_*.py / delever_*.py  # 目标迭代/风控证伪
+│   └── multiple_testing.py / cost_sensitivity.py  # 方法论检验
+├── practice/              # 实盘工具（5个）
+│   ├── signal_picker.py      # 选股清单
+│   ├── paper_trade.py        # 纸面跟踪
+│   ├── performance_report.py # 绩效+归因报告
+│   ├── refresh_data.py       # 月度数据刷新
+│   └── check_baostock.py     # baostock 解封检测
+├── tests/                 # 连接与功能测试
+├── figures/               # 结果图表（本地生成，不入库）
+├── reports/               # 绩效报告（markdown）
+└── *.pkl / *.csv          # 数据缓存（本地，不入库）
 ```
 
 ## 数据源
 
 - **baostock** — 全市场日线（含退市股，前复权 `adjustflag="2"`），免费，~0.47 只/秒
-  > ⚠️ 所有 baostock 抓取脚本已内置 0.5s/请求限速、并发降至 2。高频/并发会触发 IP 黑名单；若被封，换 IP（重启路由器/手机热点/VPN）后跑 `check_baostock.py` 即可恢复。
+  > ⚠️ 所有 baostock 抓取脚本已内置 0.5s/请求限速、并发降至 2。高频/并发会触发 IP 黑名单；若被封，换 IP（重启路由器/手机热点/VPN）后跑 `practice/check_baostock.py` 即可恢复。
 - **akshare** — 新浪财务接口 `stock_financial_analysis_indicator`（ROE/毛利率/负债率等）
 - **新浪** `stock_zh_a_daily` — 价格数据备用源（东财 `stock_zh_a_hist` 不稳定）
 
@@ -69,10 +69,13 @@ pip install akshare baostock backtrader pandas numpy matplotlib scipy scikit-lea
 
 ## 运行方式
 
-1. 先跑 `fetch_*.py` 生成数据缓存（`.pkl`，已 gitignore，需本地重新抓取）
-2. 再跑对应的分析脚本（如 `value_factor.py`）出 IC 表 + 回测结果 + PNG
+> 所有脚本在**项目根目录**运行（相对路径按根目录解析）。
 
-> 数据缓存文件（`*.pkl` / `*.csv`）不随仓库分发，需用 `fetch_*.py` 重新抓取。抓取耗时：全市场估值 ~15 分钟，质量因子 ~13 分钟。
+1. 先跑 `fetch/` 下脚本生成数据缓存（`.pkl`，已 gitignore，需本地重新抓取）
+2. 再跑 `research/` 下分析脚本出 IC 表 + 回测结果 + PNG
+3. 实盘流程见 `STRATEGY.md`：`python practice/refresh_data.py` → `practice/paper_trade.py` → `practice/performance_report.py`
+
+> 数据缓存文件（`*.pkl` / `*.csv`）不随仓库分发，需用 `fetch/` 下脚本重新抓取。抓取耗时：全市场价格 ~15 分钟，质量因子 ~13 分钟。
 
 ## 回测参数约定
 

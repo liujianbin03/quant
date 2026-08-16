@@ -26,14 +26,14 @@
 ## 3. 操作流程（月度）
 
 ```bash
-# 每月一次（约20分钟）：
-python refresh_data.py              # 刷新价格/估值/指数到最新（前复权需全量重抓）
-python paper_trade.py               # 记录本月前向收益、滚动净值（零风险纸面跟踪）
-python performance_report.py        # 出绩效+归因报告
-python signal_picker.py 20          # 看当前 top20 清单（可选）
+# 每月一次（约20分钟），均在项目根目录运行：
+python practice/refresh_data.py              # 刷新价格/估值/指数到最新（前复权需全量重抓）
+python practice/paper_trade.py               # 记录本月前向收益、滚动净值（零风险纸面跟踪）
+python practice/performance_report.py        # 出绩效+归因报告
+python practice/signal_picker.py 20          # 看当前 top20 清单（可选）
 ```
 
-每两周跑一次 `performance_report.py` 即为"每两周绩效与归因报告"。
+每两周跑一次 `practice/performance_report.py` 即为"每两周绩效与归因报告"。
 
 ## 4. 已证伪的手段（不要再试）
 
@@ -57,14 +57,14 @@ python signal_picker.py 20          # 看当前 top20 清单（可选）
 
 ## 6. 工具清单
 
-- `signal_picker.py` — 当前 top-N 清单
-- `paper_trade.py` — 纸面跟踪（状态存 paper_trade_state.pkl）
-- `performance_report.py` — 绩效+归因报告
-- `refresh_data.py` — 月度数据刷新（更新 fetch 脚本 END + 全量重抓）
-- `goal_search.py` / `goal_sim.py` / `risk_*.py` / `delever_*.py` / `multiple_testing.py` / `cost_sensitivity.py` — 研究记录（已证伪/验证的探索）
+- `practice/signal_picker.py` — 当前 top-N 清单
+- `practice/paper_trade.py` — 纸面跟踪（状态存 paper_trade_state.pkl）
+- `practice/performance_report.py` — 绩效+归因报告
+- `practice/refresh_data.py` — 月度数据刷新（更新 fetch 脚本 END + 全量重抓）
+- `research/goal_search.py` / `goal_sim.py` / `risk_*.py` / `delever_*.py` / `multiple_testing.py` / `cost_sensitivity.py` — 研究记录（已证伪/验证的探索）
 
 ## 7. 数据源与限速
 
 - baostock（价格/估值/股本）、akshare新浪（质量）、退市股单独补抓
-- 所有 baostock 抓取脚本已限速 0.5s/请求、并发≤2；被封 IP 后换 IP（重启路由器/热点/VPN）跑 `check_baostock.py`
+- 所有 baostock 抓取脚本已限速 0.5s/请求、并发≤2；被封 IP 后换 IP（重启路由器/热点/VPN）跑 `practice/check_baostock.py`
 - 数据缓存 `*.pkl`/`*.csv` 本地保存、不入库（gitignore）

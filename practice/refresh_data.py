@@ -21,9 +21,9 @@ end = sys.argv[1] if len(sys.argv) > 1 else datetime.date.today().isoformat()
 
 # (脚本, 说明, 是否删除其缓存以强制重抓)
 STEPS = [
-    ("full_market_ic.py",   "close/turn 价格(前复权)", "full_market_cache.pkl"),
-    ("fetch_valuation.py",  "PE/PB/PS/PCF 估值",      "val_cache.pkl"),
-    ("fetch_index_name.py", "沪深300 + 股票名称",      None),
+    ("fetch/full_market_ic.py",   "close/turn 价格(前复权)", "full_market_cache.pkl"),
+    ("fetch/fetch_valuation.py",  "PE/PB/PS/PCF 估值",      "val_cache.pkl"),
+    ("fetch/fetch_index_name.py", "沪深300 + 股票名称",      None),
 ]
 
 print(f"目标刷新日期: {end}\n")
@@ -55,6 +55,6 @@ for fn, desc, _ in STEPS:
         print(f"  [失败] {fn} 退出码 {r.returncode}，中断。可重跑本脚本续跑。", flush=True)
         sys.exit(1)
 
-print("\n刷新完成。下一步：")
-print("  1) python paper_trade.py       # 记录本月前向收益、滚动净值")
-print("  2) python performance_report.py # 出绩效与归因报告")
+print("\n刷新完成。下一步（均在项目根目录运行）：")
+print("  1) python practice/paper_trade.py       # 记录本月前向收益、滚动净值")
+print("  2) python practice/performance_report.py # 出绩效与归因报告")
