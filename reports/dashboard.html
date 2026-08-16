@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<title>A股价值策略看板</title>
+<style>
+body{font-family:'Microsoft YaHei',sans-serif;margin:20px;color:#222}
+h1{font-size:20px} .cards{display:flex;gap:16px;flex-wrap:wrap}
+.card{border:1px solid #ddd;border-radius:8px;padding:14px 18px;min-width:140px}
+.card b{font-size:22px;display:block} .ok{color:#1a7f37} .no{color:#c62828}
+table{border-collapse:collapse;margin:10px 0;width:100%}
+th,td{border:1px solid #ddd;padding:6px 10px;text-align:left;font-size:14px}
+th{background:#f5f5f5} h2{font-size:16px;margin-top:24px;border-bottom:2px solid #333;padding-bottom:4px}
+.muted{color:#888;font-size:13px}
+</style></head><body>
+<h1>A股价值策略看板 <span class="muted">PB+EP+换手率+涨停次数 · top20 · 剔小30%</span></h1>
+<p class="muted">数据截至 2026-08-14 · 生成于 2026-08-16</p>
+<p>纸面跟踪：起始 2026-08-14，当前净值 1.0000，沪深300起始 4666</p>
+<h2>绩效（2015–2026 回测，含成本）</h2>
+<div class="cards">
+<div class="card">年化收益<b>+5.18%</b></div>
+<div class="card">超额夏普<b>0.36</b></div>
+<div class="card">最大回撤<b>-27.85%</b></div>
+<div class="card">累计净值<b>1.71</b></div>
+<div class="card">沪深300累计<b>+13.6%</b></div>
+</div>
+<h2>目标对标</h2>
+<div class="cards">
+<div class="card">跑赢沪深300<b class="ok">✓</b></div>
+<div class="card">回撤≤15%<b class="no">✗</b></div>
+<div class="card">夏普≥0.4<b class="no">✗</b></div>
+</div>
+<h2>当前持仓 top20</h2>
+<table><tr><th>#</th><th>代码</th><th>名称</th><th>现价</th><th>PB</th><th>EP%</th></tr><tr><td>1</td><td>sh.600000</td><td>浦发银行</td><td>9.10</td><td>0.40</td><td>16.90%</td></tr><tr><td>2</td><td>sh.601229</td><td>上海银行</td><td>9.42</td><td>0.53</td><td>18.11%</td></tr><tr><td>3</td><td>sh.601818</td><td>光大银行</td><td>3.00</td><td>0.35</td><td>21.34%</td></tr><tr><td>4</td><td>sh.601390</td><td>中国中铁</td><td>4.36</td><td>0.33</td><td>19.84%</td></tr><tr><td>5</td><td>sz.000544</td><td>中原环保</td><td>7.29</td><td>0.76</td><td>14.97%</td></tr><tr><td>6</td><td>sh.600704</td><td>物产中大</td><td>4.85</td><td>0.60</td><td>14.40%</td></tr><tr><td>7</td><td>sh.600908</td><td>无锡银行</td><td>5.33</td><td>0.51</td><td>19.88%</td></tr><tr><td>8</td><td>sh.688330</td><td>宏力达</td><td>33.07</td><td>1.05</td><td>13.63%</td></tr><tr><td>9</td><td>sz.000913</td><td>钱江摩托</td><td>11.28</td><td>1.11</td><td>14.34%</td></tr><tr><td>10</td><td>sh.600894</td><td>广日股份</td><td>7.75</td><td>0.74</td><td>10.83%</td></tr><tr><td>11</td><td>sz.000719</td><td>中原传媒</td><td>12.08</td><td>1.00</td><td>11.14%</td></tr><tr><td>12</td><td>sh.600210</td><td>紫江企业</td><td>6.04</td><td>1.33</td><td>11.86%</td></tr><tr><td>13</td><td>sh.600874</td><td>创业环保</td><td>5.53</td><td>0.82</td><td>10.18%</td></tr><tr><td>14</td><td>sh.601881</td><td>中国银河</td><td>12.21</td><td>1.10</td><td>9.61%</td></tr><tr><td>15</td><td>sh.600483</td><td>福能股份</td><td>10.54</td><td>1.05</td><td>9.74%</td></tr><tr><td>16</td><td>sz.000563</td><td>陕国投A</td><td>2.97</td><td>0.82</td><td>9.45%</td></tr><tr><td>17</td><td>sh.600496</td><td>精工钢构</td><td>3.22</td><td>0.69</td><td>9.87%</td></tr><tr><td>18</td><td>sh.603365</td><td>水星家纺</td><td>17.20</td><td>1.39</td><td>9.35%</td></tr><tr><td>19</td><td>sz.002034</td><td>旺能环境</td><td>13.96</td><td>0.99</td><td>10.01%</td></tr><tr><td>20</td><td>sh.600983</td><td>惠而浦</td><td>7.68</td><td>1.92</td><td>8.48%</td></tr></table>
+<h2>因子归因（持仓 vs 候选池）</h2>
+<table><tr><th>因子</th><th>持仓均值</th><th>候选池均值</th></tr><tr><td>PB</td><td>0.82</td><td>2.99</td></tr><tr><td>EP%</td><td>11.50</td><td>1.74</td></tr><tr><td>换手率</td><td>0.68</td><td>2.45</td></tr><tr><td>涨停次数</td><td>0.00</td><td>1.94</td></tr></table>
+<p class="muted">研究用途，非投资建议。历史回测≠未来收益。</p>
+</body></html>
