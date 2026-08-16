@@ -21,6 +21,7 @@ LISTED_CACHE = "full_market_cache.pkl"
 VAL_CACHE = "val_cache.pkl"
 SIZE_CACHE = "size_industry_cache.pkl"
 INDEX_NAME_CACHE = "index_name_cache.pkl"
+DIV_CACHE = "dividend_cache.pkl"
 
 HOLD = 21
 ROUND_TRIP = 0.0030
@@ -66,6 +67,8 @@ pb = val['pb'].reindex(close.index)
 total_share = si['totalShare'].reindex(close.columns)
 names = iname['name'].reindex(close.columns)
 hs300 = iname['index'].reindex(close.index)
+with open(DIV_CACHE, 'rb') as f:
+    dps = pickle.load(f)
 
 with np.errstate(divide='ignore', invalid='ignore'):
     ep = (1.0 / pe).replace([np.inf, -np.inf], np.nan)
@@ -75,12 +78,22 @@ daily_ret = close.pct_change(fill_method=None)
 dates = close.index
 
 
+def carry_yield(i):
+    """股息率：上一财年派息(税前)/现价，4个月年报滞后(5月起用上年、1-4月用再上年)"""
+    y = dates[i].year - 1 if dates[i].month >= 5 else dates[i].year - 2
+    if y < int(dps.index.min()):
+        return pd.Series(np.nan, index=close.columns)
+    row = dps.loc[y] if y in dps.index else pd.Series(np.nan, index=close.columns)
+    return row.reindex(close.columns) / close.iloc[i]
+
+
 def score_strategy(i):
-    """PB+EP + 换手率(低) + 涨停次数(少) —— 参数搜索样本外最优"""
+    """PB+EP+股息率 + 换手率(低) + 涨停次数(少) —— 参数搜索+carry样本外验证"""
     pbep = -zscore(clean(pb.iloc[i])) + zscore(winsorize(ep.iloc[i]))
     t = -zscore(winsorize(turn.iloc[i - 21:i].mean()))
     lc = -zscore(winsorize((daily_ret.iloc[i - 63:i] >= 0.095).sum()))
-    return pbep + t + lc
+    cy = zscore(winsorize(carry_yield(i))).fillna(0)
+    return pbep + t + lc + 0.3 * cy
 
 
 def universe_ex_small(i):
