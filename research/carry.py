@@ -92,7 +92,7 @@ def score_carry(i):
 
 
 def backtest(score_fn):
-    rets, prev = [], set()
+    rets, prev, ret_dates = [], set(), []
     for i in rebal:
         sc = score_fn(i)
         fwd = close.iloc[i + HOLD] / close.iloc[i] - 1
@@ -102,7 +102,8 @@ def backtest(score_fn):
             turnv = 1 - len(set(top) & prev) / N_HOLD if prev else 1.0
             rets.append(fwd[top].mean() - turnv * ROUND_TRIP)
             prev = set(top)
-    return pd.Series(rets, index=pd.Index([dates[i] for i in rebal]))
+            ret_dates.append(dates[i])
+    return pd.Series(rets, index=pd.Index(ret_dates))
 
 
 def stats(s):
